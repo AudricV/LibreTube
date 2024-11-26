@@ -202,12 +202,13 @@ class YoutubeHlsPlaylistParser : ParsingLoadable.Parser<HlsPlaylist> {
      *
      * The following table describes what value is parsed
      *
-     * | `acont` value  | Role flag added from [ExoPlayer track role flags][C.RoleFlags] |
-     * | ------------- | ------------- |
-     * | `dubbed`  | [C.ROLE_FLAG_DUB]  |
-     * | `descriptive`  | [C.ROLE_FLAG_DESCRIBES_VIDEO]  |
-     * | `original`  | [C.ROLE_FLAG_MAIN]  |
-     * | everything else  | [C.ROLE_FLAG_ALTERNATE]  |
+     * | `acont` value             | Role flag added from [ExoPlayer track role flags][C.RoleFlags] |
+     * |---------------------------|----------------------------------------------------------------|
+     * | `dubbed` or `dubbed-auto` | [C.ROLE_FLAG_DUB]                                              |
+     * | `descriptive`             | [C.ROLE_FLAG_DESCRIBES_VIDEO]                                  |
+     * | `original`                | [C.ROLE_FLAG_MAIN]                                             |
+     * | `secondary`               | [C.ROLE_FLAG_SUPPLEMENTARY]                                    |
+     * | everything else           | [C.ROLE_FLAG_ALTERNATE]                                        |
      *
      * @param roleFlags the current role flags of the audio track
      * @param acontValue the value of the `acont` property
@@ -215,9 +216,10 @@ class YoutubeHlsPlaylistParser : ParsingLoadable.Parser<HlsPlaylist> {
      */
     private fun getFullAudioRoleFlags(roleFlags: Int, acontValue: String): Int {
         val acontRoleFlags = when (acontValue.lowercase()) {
-            "dubbed" -> C.ROLE_FLAG_DUB
+            "dubbed", "dubbed-auto" -> C.ROLE_FLAG_DUB
             "descriptive" -> C.ROLE_FLAG_DESCRIBES_VIDEO
             "original" -> C.ROLE_FLAG_MAIN
+            "secondary" -> C.ROLE_FLAG_SUPPLEMENTARY
             // Original audio tracks without other audio track should not have the `acont` property
             // nor the `xtags` one, so the the track should be not set as the main one
             // The alternate role flag should be the most relevant flag in this case

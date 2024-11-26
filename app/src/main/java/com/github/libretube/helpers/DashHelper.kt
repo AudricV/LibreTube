@@ -196,6 +196,7 @@ object DashHelper {
             "descriptive" -> "description"
             "dubbed" -> "dub"
             "original" -> "main"
+            "secondary" -> "supplementary"
             else -> "alternate"
         }
     }
