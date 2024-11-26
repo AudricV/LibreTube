@@ -702,15 +702,20 @@ object PlayerHelper {
             roleFlags and C.ROLE_FLAG_DESCRIBES_VIDEO == C.ROLE_FLAG_DESCRIBES_VIDEO ->
                 context.getString(R.string.descriptive_audio_track)
 
-            // If the flag ROLE_FLAG_DESCRIBES_VIDEO is set, return the dubbed_audio_track
+            // If the flag ROLE_FLAG_DUB is set, return the dubbed_audio_track
             // string resource
             roleFlags and C.ROLE_FLAG_DUB == C.ROLE_FLAG_DUB ->
                 context.getString(R.string.dubbed_audio_track)
 
-            // If the flag ROLE_FLAG_DESCRIBES_VIDEO is set, return the original_or_main_audio_track
+            // If the flag ROLE_FLAG_MAIN is set, return the original_or_main_audio_track
             // string resource
             roleFlags and C.ROLE_FLAG_MAIN == C.ROLE_FLAG_MAIN ->
                 context.getString(R.string.original_or_main_audio_track)
+
+            // If the flag ROLE_FLAG_SUPPLEMENTARY is set, return the secondary_audio_track
+            // string resource
+            roleFlags and C.ROLE_FLAG_SUPPLEMENTARY == C.ROLE_FLAG_SUPPLEMENTARY ->
+                context.getString(R.string.secondary_audio_track)
 
             // Return the unknown_audio_track_type string resource for any other value
             else -> context.getString(R.string.unknown_audio_track_type)
@@ -805,7 +810,7 @@ object PlayerHelper {
      * track types.
      *
      * ExoPlayer role flags currently used for audio track types are [C.ROLE_FLAG_DESCRIBES_VIDEO],
-     * [C.ROLE_FLAG_DUB], [C.ROLE_FLAG_MAIN] and [C.ROLE_FLAG_ALTERNATE].
+     * [C.ROLE_FLAG_DUB], [C.ROLE_FLAG_MAIN], [C.ROLE_FLAG_SUPPLEMENTARY] and [C.ROLE_FLAG_ALTERNATE].
      *
      * @param roleFlags the ExoPlayer role flags to check, an int representing a bitfield
      * @return whether the provided ExoPlayer flags contain a flag used for audio track types
@@ -814,6 +819,7 @@ object PlayerHelper {
         return isFlagSet(roleFlags, C.ROLE_FLAG_DESCRIBES_VIDEO) ||
                 isFlagSet(roleFlags, C.ROLE_FLAG_DUB) ||
                 isFlagSet(roleFlags, C.ROLE_FLAG_MAIN) ||
+                isFlagSet(roleFlags, C.ROLE_FLAG_SUPPLEMENTARY) ||
                 isFlagSet(roleFlags, C.ROLE_FLAG_ALTERNATE)
     }
 
